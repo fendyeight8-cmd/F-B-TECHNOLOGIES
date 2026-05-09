@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
@@ -6,7 +6,9 @@ from functools import wraps
 from datetime import datetime
 import os
 
-app = Flask(__name__)
+STATIC_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static_frontend')
+
+app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path='')
 CORS(app)
 
 # =========================
@@ -146,15 +148,24 @@ def admin_required(f):
     return decorated
 
 # =========================
-# ROUTES
+# SERVE FRONTEND
 # =========================
 
 @app.route('/')
-def home():
-    return jsonify({
-        'status': 'online',
-        'message': 'Food & Beverage Technologies API Running'
-    })
+def serve_index():
+    return send_from_directory(STATIC_FOLDER, 'index.html')
+
+@app.route('/about')
+def serve_about():
+    return send_from_directory(STATIC_FOLDER, 'about.html')
+
+@app.route('/gallery')
+def serve_gallery():
+    return send_from_directory(STATIC_FOLDER, 'gallery.html')
+
+@app.route('/admin')
+def serve_admin():
+    return send_from_directory(STATIC_FOLDER, 'admin.html')
 
 # =========================
 # HEALTH CHECK
