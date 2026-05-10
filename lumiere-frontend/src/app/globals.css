@@ -157,6 +157,149 @@ nav.scrolled {
   color: var(--dark);
 }
 
+/* MOBILE TOGGLE & DRAWER MENU */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.mobile-menu-toggle .bar {
+  width: 100%;
+  height: 2px;
+  background-color: var(--gold-light);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: left center;
+}
+
+.mobile-menu-toggle.active .line-1 {
+  transform: rotate(45deg) translate(2px, -2px);
+  background-color: var(--gold);
+}
+
+.mobile-menu-toggle.active .line-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.mobile-menu-toggle.active .line-3 {
+  transform: rotate(-45deg) translate(2px, 2px);
+  background-color: var(--gold);
+}
+
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-drawer.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 7, 5, 0.96);
+  backdrop-filter: blur(20px);
+}
+
+.drawer-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(180deg, #13100a 0%, #080705 100%);
+  border-left: 1px solid rgba(201, 169, 110, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 40px;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+}
+
+.mobile-drawer.open .drawer-content {
+  transform: translateX(0);
+}
+
+.drawer-links {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 60px;
+}
+
+.drawer-links li {
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-drawer.open .drawer-links li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.drawer-links a {
+  font-family: var(--font-cormorant), serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--cream);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+}
+
+.drawer-links a:hover {
+  color: var(--gold-light);
+  padding-left: 8px;
+}
+
+.drawer-actions {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-drawer.open .drawer-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE NAV MEDIA RULES */
+@media (max-width: 992px) {
+  nav {
+    padding: 20px 30px;
+  }
+  nav.scrolled {
+    padding: 16px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-menu-toggle {
+    display: flex;
+  }
+}
+
 /* HERO */
 .hero {
   height: 100vh;
@@ -1883,3 +2026,57 @@ footer {
   }
 }
 
+/* SCROLL TO TOP / HOME BUTTON FLOATING TOGGLE */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(19, 16, 10, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  color: var(--gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 998;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.scroll-to-top-btn.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.scroll-to-top-btn:hover {
+  background: var(--gold);
+  color: var(--dark);
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(201, 169, 110, 0.25);
+}
+
+.scroll-to-top-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.scroll-to-top-btn:hover svg {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top-btn {
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+  }
+}

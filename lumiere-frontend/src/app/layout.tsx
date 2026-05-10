@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 import Cursor from "@/components/Cursor";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className={`${jost.variable} ${cormorant.variable} antialiased`}>
         <div className="grain" />
         <Cursor />
+        <ScrollToTop />
         {children}
       </body>
     </html>
