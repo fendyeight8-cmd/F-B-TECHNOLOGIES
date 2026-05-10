@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 
 const services = [
-  { id: "bridal", name: "Bridal Makeup", image: "/images/bridal_makeup.png" },
-  { id: "catering", name: "Catering", image: "/images/catering.png" },
-  { id: "bento", name: "Corporate Bento", image: "/images/corporate_event.png" },
-  { id: "engagement", name: "Engagement", image: "/images/engagement.png" }
+  { id: "bridal", name: "Bridal Makeup", icon: "💄", image: "/images/bridal_makeup.png" },
+  { id: "catering", name: "Catering", icon: "🍽️", image: "/images/catering.png" },
+  { id: "bento", name: "Corporate Bento", icon: "🍱", image: "/images/corporate_event.png" },
+  { id: "event", name: "Event Planning", icon: "🎪", image: "/images/hero2.png" },
+  { id: "engagement", name: "Engagement", icon: "💍", image: "/images/engagement.png" }
 ];
 
 export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -33,7 +34,11 @@ export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onC
     eventType: "",
     // Engagement specific
     theme: "",
-    venue: ""
+    venue: "",
+    // Event Planning specific
+    eventCategory: "",
+    eventSize: "",
+    budget: ""
   });
 
   if (!isOpen) return null;
@@ -64,6 +69,8 @@ export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onC
         extraDetails = `\n🍽️ *Cuisine:* ${formData.cuisineType || "–"}\n🎪 *Event Type:* ${formData.eventType || "–"}\n👥 *Guests:* ${formData.guests || "–"}`;
       } else if (formData.service === "Engagement") {
         extraDetails = `\n🎨 *Theme:* ${formData.theme || "–"}\n📍 *Venue:* ${formData.venue || "–"}\n👥 *Guests:* ${formData.guests || "–"}`;
+      } else if (formData.service === "Event Planning") {
+        extraDetails = `\n🎪 *Event Category:* ${formData.eventCategory || "–"}\n👥 *Event Size:* ${formData.eventSize || "–"}\n💰 *Budget:* ${formData.budget || "–"}\n📍 *Venue:* ${formData.venue || "–"}`;
       }
 
       const whatsappMsg = `✨ *Nums-Nums Catering & Events — New Booking* ✨\n\n📋 *Service:* ${formData.service}\n👤 *Name:* ${formData.name}\n📱 *Phone:* ${formData.phone}\n📅 *Date:* ${formData.date}${extraDetails}\n\n📝 *Notes:* ${formData.notes || "None"}`;
@@ -173,6 +180,48 @@ export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onC
             </div>
           </>
         );
+      case "Event Planning":
+        return (
+          <>
+            <div className="form-group">
+              <select
+                value={formData.eventCategory}
+                onChange={(e) => setFormData({...formData, eventCategory: e.target.value})}
+                style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid rgba(201,169,110,0.25)', color: 'var(--white)', padding: '14px 0', fontFamily: 'var(--font-jost), sans-serif', outline: 'none' }}
+              >
+                <option value="" style={{ background: '#13100a' }}>Select Event Category</option>
+                <option value="Wedding" style={{ background: '#13100a' }}>Wedding</option>
+                <option value="Birthday Party" style={{ background: '#13100a' }}>Birthday Party</option>
+                <option value="Corporate Dinner" style={{ background: '#13100a' }}>Corporate Dinner</option>
+                <option value="Product Launch" style={{ background: '#13100a' }}>Product Launch</option>
+                <option value="Charity Gala" style={{ background: '#13100a' }}>Charity Gala</option>
+                <option value="Family Gathering" style={{ background: '#13100a' }}>Family Gathering</option>
+                <option value="Other" style={{ background: '#13100a' }}>Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <select
+                value={formData.eventSize}
+                onChange={(e) => setFormData({...formData, eventSize: e.target.value})}
+                style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid rgba(201,169,110,0.25)', color: 'var(--white)', padding: '14px 0', fontFamily: 'var(--font-jost), sans-serif', outline: 'none' }}
+              >
+                <option value="" style={{ background: '#13100a' }}>Event Size</option>
+                <option value="Intimate (10-30 pax)" style={{ background: '#13100a' }}>Intimate (10–30 pax)</option>
+                <option value="Medium (30-100 pax)" style={{ background: '#13100a' }}>Medium (30–100 pax)</option>
+                <option value="Large (100-300 pax)" style={{ background: '#13100a' }}>Large (100–300 pax)</option>
+                <option value="Grand (300+ pax)" style={{ background: '#13100a' }}>Grand (300+ pax)</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <input type="text" placeholder="Budget" value={formData.budget} onChange={(e) => setFormData({...formData, budget: e.target.value})} />
+              <label>Estimated Budget (RM)</label>
+            </div>
+            <div className="form-group">
+              <input type="text" placeholder="Venue" value={formData.venue} onChange={(e) => setFormData({...formData, venue: e.target.value})} />
+              <label>Venue / Location</label>
+            </div>
+          </>
+        );
       default:
         return null;
     }
@@ -213,7 +262,10 @@ export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onC
                 >
                   <img src={s.image} alt={s.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: formData.service === s.name ? 0.8 : 0.4, transition: 'opacity 0.3s' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10, 8, 6, 0.9) 0%, rgba(10, 8, 6, 0.2) 100%)' }} />
-                  <div className="ssc-name" style={{ position: 'relative', zIndex: 2, fontSize: '1.25rem' }}>{s.name}</div>
+                  <div style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+                    <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{s.icon}</div>
+                    <div className="ssc-name" style={{ fontSize: '1.1rem' }}>{s.name}</div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -227,6 +279,7 @@ export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onC
               {formData.service === "Corporate Bento" ? "Tell us about your bento order." :
                formData.service === "Bridal Makeup" ? "Tell us about your special day." :
                formData.service === "Catering" ? "Tell us about your event." :
+               formData.service === "Event Planning" ? "Let us plan your perfect event." :
                "Tell us about your celebration."}
             </p>
             <div className="booking-form-grid">
@@ -292,7 +345,14 @@ export default function BookingModal({ isOpen, onClose }: { isOpen: boolean; onC
                   {formData.guests !== "0" && <div className="confirm-row"><span className="confirm-label">Guests</span><span className="confirm-value">{formData.guests}</span></div>}
                 </>
               )}
-              
+              {formData.service === "Event Planning" && (
+                <>
+                  {formData.eventCategory && <div className="confirm-row"><span className="confirm-label">Category</span><span className="confirm-value">{formData.eventCategory}</span></div>}
+                  {formData.eventSize && <div className="confirm-row"><span className="confirm-label">Size</span><span className="confirm-value">{formData.eventSize}</span></div>}
+                  {formData.budget && <div className="confirm-row"><span className="confirm-label">Budget</span><span className="confirm-value">RM {formData.budget}</span></div>}
+                  {formData.venue && <div className="confirm-row"><span className="confirm-label">Venue</span><span className="confirm-value">{formData.venue}</span></div>}
+                </>
+              )}
               {formData.notes && <div className="confirm-row"><span className="confirm-label">Notes</span><span className="confirm-value">{formData.notes}</span></div>}
             </div>
             <button className="book-btn-whatsapp" onClick={handleSubmit}>
