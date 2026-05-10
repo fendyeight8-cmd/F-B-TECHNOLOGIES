@@ -33,7 +33,7 @@ const features = [
   { icon: "🍱", title: "Variety", desc: "Diverse menu options from local favourites to international cuisine, catering to every palate." },
   { icon: "⚡", title: "Flexibility", desc: "Last-minute changes? We adapt. Our team handles unexpected adjustments with ease." },
   { icon: "✨", title: "Customisation", desc: "Dietary needs, branding on sleeves & stickers — every detail personalised for your company." },
-  { icon: "🏆", title: "Halal Certified", desc: "100% Halal-certified kitchen with rigorous food safety standards and premium ingredients." },
+  { icon: "🏆", title: "Quality Assured", desc: "Prepared with the finest locally-sourced ingredients, strict hygiene standards, and authentic Malaysian recipes." },
 ];
 
 export default function CorporateBento({ onOpenBooking }: { onOpenBooking: () => void }) {
